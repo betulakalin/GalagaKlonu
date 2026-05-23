@@ -17,7 +17,6 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
@@ -53,27 +52,24 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Label="Shared" >
+  <ImportGroup Label="Shared">
   </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-    <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-      <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    </ImportGroup>
-
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -84,7 +80,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -99,7 +95,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -112,7 +108,8 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,12 +124,33 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-
-  <ItemGroup></ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\sfml-graphics.redist.2.4.2.0\build\native\sfml-graphics.redist.targets" Condition="Exists('packages\sfml-graphics.redist.2.4.2.0\build\native\sfml-graphics.redist.targets')" />
+    <Import Project="packages\sfml-system.redist.2.4.2.0\build\native\sfml-system.redist.targets" Condition="Exists('packages\sfml-system.redist.2.4.2.0\build\native\sfml-system.redist.targets')" />
+    <Import Project="packages\sfml-system.2.4.2.0\build\native\sfml-system.targets" Condition="Exists('packages\sfml-system.2.4.2.0\build\native\sfml-system.targets')" />
+    <Import Project="packages\sfml-window.redist.2.4.2.0\build\native\sfml-window.redist.targets" Condition="Exists('packages\sfml-window.redist.2.4.2.0\build\native\sfml-window.redist.targets')" />
+    <Import Project="packages\sfml-window.2.4.2.0\build\native\sfml-window.targets" Condition="Exists('packages\sfml-window.2.4.2.0\build\native\sfml-window.targets')" />
+    <Import Project="packages\sfml-graphics.2.4.2.0\build\native\sfml-graphics.targets" Condition="Exists('packages\sfml-graphics.2.4.2.0\build\native\sfml-graphics.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Bu proje bu bilgisayarda olmayan NuGet paketlerine başvuru yapıyor. Bunları indirmek için NuGet Paket Geri Yükleme'yi kullanın. Daha fazla bilgi için, bkz. http://go.microsoft.com/fwlink/?LinkID=322105. Eksik dosya: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\sfml-graphics.redist.2.4.2.0\build\native\sfml-graphics.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sfml-graphics.redist.2.4.2.0\build\native\sfml-graphics.redist.targets'))" />
+    <Error Condition="!Exists('packages\sfml-system.redist.2.4.2.0\build\native\sfml-system.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sfml-system.redist.2.4.2.0\build\native\sfml-system.redist.targets'))" />
+    <Error Condition="!Exists('packages\sfml-system.2.4.2.0\build\native\sfml-system.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sfml-system.2.4.2.0\build\native\sfml-system.targets'))" />
+    <Error Condition="!Exists('packages\sfml-window.redist.2.4.2.0\build\native\sfml-window.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sfml-window.redist.2.4.2.0\build\native\sfml-window.redist.targets'))" />
+    <Error Condition="!Exists('packages\sfml-window.2.4.2.0\build\native\sfml-window.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sfml-window.2.4.2.0\build\native\sfml-window.targets'))" />
+    <Error Condition="!Exists('packages\sfml-graphics.2.4.2.0\build\native\sfml-graphics.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\sfml-graphics.2.4.2.0\build\native\sfml-graphics.targets'))" />
+  </Target>
 </Project>
