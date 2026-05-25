@@ -40,11 +40,29 @@ int main() {
     for (int i = 0; i < 70; i++) {
         yildiz y;
         y.sekil.setRadius((rand() % 3) + 1.f);
-        y.sekil.setFillColor(sf::Color(245, 240, 250, rand() % 200 + 40));
+        y.sekil.setFillColor(sf::Color(146, 215, 224, rand() % 200 + 40));
         y.sekil.setPosition(rand() % 800, rand() % 600);
         y.hiz = (rand() % 3) + 2.f;
         yildizlar.push_back(y);
     }
+
+    sf::ConvexShape savasucagi;
+    savasucagi.setPointCount(8); 
+
+    savasucagi.setPoint(0, sf::Vector2f(0, -30));   
+    savasucagi.setPoint(1, sf::Vector2f(8, -10));    
+    savasucagi.setPoint(2, sf::Vector2f(20, 5));   
+    savasucagi.setPoint(3, sf::Vector2f(10, 20));    
+    savasucagi.setPoint(4, sf::Vector2f(0, 15));  
+    savasucagi.setPoint(5, sf::Vector2f(-10, 20));   
+    savasucagi.setPoint(6, sf::Vector2f(-20, 5));
+    savasucagi.setPoint(7, sf::Vector2f(-8, -10));
+    savasucagi.setFillColor(sf::Color(224, 7, 160));
+    savasucagi.setOrigin(0, 0);
+    savasucagi.setPosition(398, 528); 
+
+    std::vector<kursun> kursunlar;
+
     while (pencere.isOpen()) {
         sf::Event olay;
 
@@ -52,7 +70,18 @@ int main() {
             if (olay.type == sf::Event::Closed) {
                 pencere.close();
             }
-        }
+            if (olay.type == sf::Event::KeyPressed) {
+                if (olay.key.code == sf::Keyboard::Space) {
+                    kursun k;
+                    k.sekil.setSize(sf::Vector2f(4, 15));
+                    k.sekil.setFillColor(sf::Color(102, 4, 4));
+                    k.sekil.setPosition(savasucagi.getPosition().x, savasucagi.getPosition().y - 25);
+                    k.aktif = true;
+                    k.bizimMi = true;
+                    kursunlar.push_back(k);
+                  }
+                }
+            }
         //etkilesimleri algilamasi icin yazdik
         for (auto& y : yildizlar) {
             y.sekil.move(0.f, y.hiz);
@@ -60,11 +89,39 @@ int main() {
                 y.sekil.setPosition(rand() % 800, 0.f);
             }
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+            if (savasucagi.getPosition().x > 20.f) {
+                savasucagi.move(-7.2f, 0.f);
+            }
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+            if (savasucagi.getPosition().x < 780.f) {
+                savasucagi.move(7.2f, 0.f);
+            }
+        }
+        for (auto& k : kursunlar) {
+            if (k.aktif) {
+                k.sekil.move(0, -15.f);
+                if (k.sekil.getPosition().y < 0) {
+                    k.aktif = false;
+                }
+            }
+        }
 
         pencere.clear(sf::Color::Black); //ekrani temizledik
         for (const auto& y : yildizlar) {
             pencere.draw(y.sekil);
         }
+
+        for (const auto& k : kursunlar) {
+            if (k.aktif) {
+                pencere.draw(k.sekil);
+            }
+        }
+
+        pencere.draw(savasucagi);
+
         pencere.display();
     }
 
