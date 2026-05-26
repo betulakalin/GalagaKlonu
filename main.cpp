@@ -63,6 +63,33 @@ int main() {
 
     std::vector<kursun> kursunlar;
 
+    std::vector<uzaylilar> dusmanlar;
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 10; j++) {
+            uzaylilar u;
+            u.sekil.setPointCount(10);
+            u.sekil.setPoint(0, sf::Vector2f(0, -18));   
+            u.sekil.setPoint(1, sf::Vector2f(8, -12));   
+            u.sekil.setPoint(2, sf::Vector2f(18, -5));   
+            u.sekil.setPoint(3, sf::Vector2f(22, 10));   
+            u.sekil.setPoint(4, sf::Vector2f(12, 18));   
+            u.sekil.setPoint(5, sf::Vector2f(0, 8));     
+            u.sekil.setPoint(6, sf::Vector2f(-12, 18));  
+            u.sekil.setPoint(7, sf::Vector2f(-22, 10));  
+            u.sekil.setPoint(8, sf::Vector2f(-18, -5));  
+            u.sekil.setPoint(9, sf::Vector2f(-8, -12));
+            u.sekil.setFillColor(sf::Color(9, 25, 145));
+
+            u.sekil.setPosition(130.f + (j * 60.f), 40.f + (i * 60.f));
+            u.aktif = true;
+            u.hedefYeri = sf::Vector2f(130.f + (j * 60.f), 40.f + (i * 60.f));
+            u.atesZamani = rand() % 400 + 250;
+            dusmanlar.push_back(u);
+        }
+    }
+    float dusmanhizi = 2.f;
+    float asagiinishizi = 10.f;
+
     while (pencere.isOpen()) {
         sf::Event olay;
 
@@ -100,13 +127,71 @@ int main() {
                 savasucagi.move(7.2f, 0.f);
             }
         }
+        
         for (auto& k : kursunlar) {
             if (k.aktif) {
-                k.sekil.move(0, -15.f);
-                if (k.sekil.getPosition().y < 0) {
-                    k.aktif = false;
+                if (k.bizimMi) {
+                    k.sekil.move(0, -15.f);
+                    if (k.sekil.getPosition().y < 0) {
+                        k.aktif = false;
+                    }
+                }
+                else {
+                    k.sekil.move(0, 10.f);
+                    if (k.sekil.getPosition().y > 600.f) {
+                            k.aktif = false;
+                    }
                 }
             }
+        }
+
+        bool yonDegistir = false;
+        static int saldiransayisi = 0;
+        for (auto& d : dusmanlar) {
+            if (d.aktif) {
+                if (!d.saldirma) {
+                    d.hedefYeri.x += dusmanhizi;
+                    d.sekil.setPosition(d.hedefYeri.x, d.hedefYeri.y);
+                    d.sekil.setRotation(0.f);
+                    if (d.sekil.getPosition().x <= 30.f || d.sekil.getPosition().x >= 770.f) {
+                        yonDegistir = true;
+                    }
+                    if (saldiransayisi < 2 && rand() % 2500 < 2) {
+                        d.saldirma = true;
+                        saldiransayisi++;
+                    }
+                }
+                else {
+                    float dx = savasucagi.getPosition().x - d.sekil.getPosition().x;
+                    float dy = savasucagi.getPosition().y - d.sekil.getPosition().y;
+                    float uzunluk = std::sqrt(dx * dx + dy * dy);
+                    if (uzunluk > 0) {
+                        d.sekil.move((dx / uzunluk) * 2.5f, (dy / uzunluk) * 2.5f);
+                        float aci = std::atan2(dy, dx) * 180.f / 3.1415f;
+                        d.sekil.setRotation(aci + 90.f);
+                    }
+                    if (d.sekil.getPosition().y > 600.f) {
+                        d.aktif = false;
+                        saldiransayisi--;
+                    }
+                }
+                if (d.atesZamani > 0) {
+                    d.atesZamani--;
+                }
+                else {
+                    kursun m;
+                    m.sekil.setSize(sf::Vector2f(6.f, 16.f));
+                    m.sekil.setFillColor(sf::Color::Yellow);
+                    m.sekil.setPosition(d.sekil.getPosition().x - 3.f, d.sekil.getPosition().y + 20.f);
+                    m.aktif = true;
+                    m.bizimMi = false;
+                    kursunlar.push_back(m);
+                    d.atesZamani = rand() % 400 + 250;
+                }
+            }
+        }
+        if (yonDegistir) {
+            dusmanhizi = -dusmanhizi;
         }
 
         pencere.clear(sf::Color::Black); //ekrani temizledik
@@ -120,6 +205,11 @@ int main() {
             }
         }
 
+        for (const auto& u : dusmanlar) {
+            if (u.aktif) {
+                pencere.draw(u.sekil);
+            }
+        }
         pencere.draw(savasucagi);
 
         pencere.display();
