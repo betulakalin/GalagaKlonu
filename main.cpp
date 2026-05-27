@@ -80,9 +80,10 @@ int main() {
             u.sekil.setPoint(9, sf::Vector2f(-8, -12));
             u.sekil.setFillColor(sf::Color(9, 25, 145));
 
-            u.sekil.setPosition(130.f + (j * 60.f), 40.f + (i * 60.f));
-            u.aktif = true;
             u.hedefYeri = sf::Vector2f(130.f + (j * 60.f), 40.f + (i * 60.f));
+            u.sekil.setPosition(u.hedefYeri.x, -100.f - (i * 150.f) - (j * 40.f));
+            u.hareketUlasti = false;
+            u.aktif = true;
             u.atesZamani = rand() % 400 + 250;
             dusmanlar.push_back(u);
         }
@@ -151,11 +152,32 @@ int main() {
             if (d.aktif) {
                 if (!d.saldirma) {
                     d.hedefYeri.x += dusmanhizi;
-                    d.sekil.setPosition(d.hedefYeri.x, d.hedefYeri.y);
-                    d.sekil.setRotation(0.f);
-                    if (d.sekil.getPosition().x <= 30.f || d.sekil.getPosition().x >= 770.f) {
+                    if (d.hedefYeri.x <= 30.f || d.hedefYeri.x >= 770.f) {
                         yonDegistir = true;
                     }
+                }
+                if (!d.hareketUlasti) {
+                    float dx = d.hedefYeri.x - d.sekil.getPosition().x;
+                    float dy = d.hedefYeri.y - d.sekil.getPosition().y;
+                    float mesafe = std::sqrt(dx * dx + dy * dy);
+
+                    if (mesafe > 5.f) {
+                        float inisHizi = 6.0f; 
+                        float dalga = std::sin(d.sekil.getPosition().y / 30.f) * 4.f;
+
+                        d.sekil.move((dx / mesafe) * inisHizi + dalga, (dy / mesafe) * inisHizi);
+                        d.sekil.setRotation(dalga * 5.f);
+                    }
+                    else {
+                       
+                        d.hareketUlasti = true;
+                    }
+                }
+                else if (!d.saldirma) {
+                    d.sekil.setPosition(d.hedefYeri); 
+                    d.sekil.setRotation(0.f);
+
+                    
                     if (saldiransayisi < 2 && rand() % 2500 < 2) {
                         d.saldirma = true;
                         saldiransayisi++;
