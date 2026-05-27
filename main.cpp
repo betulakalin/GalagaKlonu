@@ -194,6 +194,35 @@ int main() {
             dusmanhizi = -dusmanhizi;
         }
 
+        for (auto& k : kursunlar) {
+            if (k.aktif) {
+                if (k.bizimMi) {
+                    for (auto& d : dusmanlar) {
+                        if (d.aktif && k.sekil.getGlobalBounds().intersects(d.sekil.getGlobalBounds())) {
+                            d.aktif = false;
+                            k.aktif = false;
+                            break;
+                        }
+                    }
+                }
+                else {
+                    if (k.sekil.getGlobalBounds().intersects(savasucagi.getGlobalBounds())) {
+                        k.aktif = false;
+                        savasucagi.setPosition(380.f, 520.f);
+                    }
+                }
+            }
+        }
+        for (auto& d : dusmanlar) {
+            if (d.aktif && d.saldirma) {
+                if (d.sekil.getGlobalBounds().intersects(savasucagi.getGlobalBounds())) {
+                    d.aktif = false;
+                    savasucagi.setPosition(380.f, 520.f);
+                }
+
+            }
+        }
+
         pencere.clear(sf::Color::Black); //ekrani temizledik
         for (const auto& y : yildizlar) {
             pencere.draw(y.sekil);
