@@ -197,18 +197,18 @@ int main() {
                         saldiransayisi--;
                     }
                 }
-                if (d.atesZamani > 0) {
+                if (d.hareketUlasti) {
                     d.atesZamani--;
-                }
-                else {
-                    kursun m;
-                    m.sekil.setSize(sf::Vector2f(6.f, 16.f));
-                    m.sekil.setFillColor(sf::Color::Yellow);
-                    m.sekil.setPosition(d.sekil.getPosition().x - 3.f, d.sekil.getPosition().y + 20.f);
-                    m.aktif = true;
-                    m.bizimMi = false;
-                    kursunlar.push_back(m);
-                    d.atesZamani = rand() % 400 + 250;
+                    if (d.atesZamani <= 0) {
+                        kursun yeniMermi;
+                        yeniMermi.sekil.setSize(sf::Vector2f(6.f, 16.f));
+                        yeniMermi.sekil.setFillColor(sf::Color::Red);
+                        yeniMermi.sekil.setPosition(d.sekil.getPosition().x - 3.f, d.sekil.getPosition().y + 20.f);
+                        yeniMermi.aktif = true;
+                        yeniMermi.bizimMi = false;
+                        kursunlar.push_back(yeniMermi);
+                        d.atesZamani = rand() % 400 + 250;
+                    }
                 }
             }
         }
@@ -219,10 +219,23 @@ int main() {
         for (auto& k : kursunlar) {
             if (k.aktif) {
                 if (k.bizimMi) {
+                    k.sekil.move(0, -10);
+               }
+                else {
+                    k.sekil.move(0, 3.f);
+                }
+                if (k.sekil.getPosition().y < 0.f || k.sekil.getPosition().y > 800.f) {
+                    k.aktif = false;
+                 }
+
+                if (k.bizimMi) {
                     for (auto& d : dusmanlar) {
                         if (d.aktif && k.sekil.getGlobalBounds().intersects(d.sekil.getGlobalBounds())) {
                             d.aktif = false;
                             k.aktif = false;
+                            if (d.saldirma) {
+                                saldiransayisi--;
+                            }
                             break;
                         }
                     }
