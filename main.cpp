@@ -91,6 +91,7 @@ int main() {
     float dusmanhizi = 2.f;
     float asagiinishizi = 10.f;
 
+    bool oyunBasladi = false;
     while (pencere.isOpen()) {
         sf::Event olay;
 
@@ -98,8 +99,9 @@ int main() {
             if (olay.type == sf::Event::Closed) {
                 pencere.close();
             }
+
             if (olay.type == sf::Event::KeyPressed) {
-                if (olay.key.code == sf::Keyboard::Space) {
+                if (oyunBasladi &&  olay.key.code == sf::Keyboard::Space) {
                     kursun k;
                     k.sekil.setSize(sf::Vector2f(4, 15));
                     k.sekil.setFillColor(sf::Color(102, 4, 4));
@@ -110,9 +112,19 @@ int main() {
                   }
                 }
             }
+        if (!oyunBasladi) {
+            bool hepsiYerinde = true;
+            for (auto& d : dusmanlar) {
+                if (d.aktif && !d.hareketUlasti) {
+                    hepsiYerinde = false;
+                    break;
+                }
+            }
+            oyunBasladi = hepsiYerinde;
+        }
         //etkilesimleri algilamasi icin yazdik
         for (auto& y : yildizlar) {
-            y.sekil.move(0.f, y.hiz);
+            y.sekil.move
             if (y.sekil.getPosition().y > 600.f) {
                 y.sekil.setPosition(rand() % 800, 0.f);
             }
@@ -178,7 +190,7 @@ int main() {
                     d.sekil.setRotation(0.f);
 
                     
-                    if (saldiransayisi < 2 && rand() % 2500 < 2) {
+                    if (oyunBasladi && saldiransayisi < 2 && rand() % 2500 < 2) {
                         d.saldirma = true;
                         saldiransayisi++;
                     }
@@ -197,7 +209,7 @@ int main() {
                         saldiransayisi--;
                     }
                 }
-                if (d.hareketUlasti) {
+                if (oyunBasladi && d.hareketUlasti) {
                     d.atesZamani--;
                     if (d.atesZamani <= 0) {
                         kursun yeniMermi;
@@ -222,7 +234,7 @@ int main() {
                     k.sekil.move(0, -10);
                }
                 else {
-                    k.sekil.move(0, 3.f);
+                    k.sekil.move(0, 2.f);
                 }
                 if (k.sekil.getPosition().y < 0.f || k.sekil.getPosition().y > 800.f) {
                     k.aktif = false;
