@@ -92,6 +92,21 @@ int main() {
     float asagiinishizi = 10.f;
 
     bool oyunBasladi = false;
+    //skor ve can sistemi
+    int skor = 0;
+    int can = 3;
+    sf::Font font;
+    font.loadFromFile("C:/Windows/Fonts/arial.ttf");
+    sf::Text skorsayisi;
+    skorsayisi.setFont(font);
+    skorsayisi.setCharacterSize(20);
+    skorsayisi.setFillColor(sf::Color(255, 255, 255));
+    skorsayisi.setPosition(20.f, 10.f);
+    sf::Text cansayisi;
+    cansayisi.setFont(font);
+    cansayisi.setCharacterSize(20);
+    cansayisi.setFillColor(sf::Color(255, 255, 255));
+    cansayisi.setPosition(700.f, 10.f);
     while (pencere.isOpen()) {
         sf::Event olay;
 
@@ -124,7 +139,7 @@ int main() {
         }
         //etkilesimleri algilamasi icin yazdik
         for (auto& y : yildizlar) {
-            y.sekil.move
+            y.sekil.move(0.f, y.hiz);
             if (y.sekil.getPosition().y > 600.f) {
                 y.sekil.setPosition(rand() % 800, 0.f);
             }
@@ -245,6 +260,7 @@ int main() {
                         if (d.aktif && k.sekil.getGlobalBounds().intersects(d.sekil.getGlobalBounds())) {
                             d.aktif = false;
                             k.aktif = false;
+                            skor += 20;
                             if (d.saldirma) {
                                 saldiransayisi--;
                             }
@@ -256,6 +272,7 @@ int main() {
                     if (k.sekil.getGlobalBounds().intersects(savasucagi.getGlobalBounds())) {
                         k.aktif = false;
                         savasucagi.setPosition(380.f, 520.f);
+                        can--;
                     }
                 }
             }
@@ -265,6 +282,7 @@ int main() {
                 if (d.sekil.getGlobalBounds().intersects(savasucagi.getGlobalBounds())) {
                     d.aktif = false;
                     savasucagi.setPosition(380.f, 520.f);
+                    can--;
                 }
 
             }
@@ -287,6 +305,12 @@ int main() {
             }
         }
         pencere.draw(savasucagi);
+
+        skorsayisi.setString("SKOR: " + std::to_string(skor));
+        cansayisi.setString("CAN: " + std::to_string(can));
+        pencere.draw(skorsayisi);
+        pencere.draw(cansayisi);
+        
 
         pencere.display();
     }
