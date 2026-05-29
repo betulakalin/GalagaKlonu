@@ -95,6 +95,7 @@ int main() {
     //skor ve can sistemi
     int skor = 0;
     int can = 3;
+    int saldiransayisi = 0;
     sf::Font font;
     font.loadFromFile("C:/Windows/Fonts/arial.ttf");
     sf::Text skorsayisi;
@@ -113,6 +114,12 @@ int main() {
     gameover.setFillColor(sf::Color::Red);
     gameover.setString("OYUN BITTI");
     gameover.setPosition(220.f, 235.f);
+    sf::Text tekrarbaslama;
+    tekrarbaslama.setFont(font);
+    tekrarbaslama.setCharacterSize(32);
+    tekrarbaslama.setFillColor(sf::Color::White);
+    tekrarbaslama.setString("Yeniden baslamak icin R tusuna basiniz");
+    tekrarbaslama.setPosition(140.f, 320.f);
     while (pencere.isOpen()) {
         sf::Event olay;
 
@@ -162,6 +169,16 @@ int main() {
             }
         }
         
+        if (can <= 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
+            can = 3;
+            skor = 0;
+            oyunBasladi = false;
+            
+            kursunlar.clear();
+            savasucagi.setPosition(380.f, 520.f);
+            dusmanlar.clear();
+        }
+
         for (auto& k : kursunlar) {
             if (k.aktif) {
                 if (k.bizimMi) {
@@ -180,7 +197,7 @@ int main() {
         }
 
         bool yonDegistir = false;
-        static int saldiransayisi = 0;
+        
         for (auto& d : dusmanlar) {
             if (d.aktif) {
                 if (!d.saldirma) {
@@ -319,6 +336,7 @@ int main() {
         if (can <= 0) {
             pencere.clear(sf::Color::Black);
             pencere.draw(gameover);
+            pencere.draw(tekrarbaslama);
         }
 
         pencere.display();
