@@ -107,6 +107,12 @@ int main() {
     cansayisi.setCharacterSize(20);
     cansayisi.setFillColor(sf::Color(255, 255, 255));
     cansayisi.setPosition(700.f, 10.f);
+    sf::Text gameover;
+    gameover.setFont(font);
+    gameover.setCharacterSize(65);
+    gameover.setFillColor(sf::Color::Red);
+    gameover.setString("OYUN BITTI");
+    gameover.setPosition(220.f, 235.f);
     while (pencere.isOpen()) {
         sf::Event olay;
 
@@ -116,7 +122,7 @@ int main() {
             }
 
             if (olay.type == sf::Event::KeyPressed) {
-                if (oyunBasladi &&  olay.key.code == sf::Keyboard::Space) {
+                if (oyunBasladi &&  olay.key.code == sf::Keyboard::Space && can > 0) {
                     kursun k;
                     k.sekil.setSize(sf::Vector2f(4, 15));
                     k.sekil.setFillColor(sf::Color(102, 4, 4));
@@ -144,13 +150,13 @@ int main() {
                 y.sekil.setPosition(rand() % 800, 0.f);
             }
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) && can > 0) {
             if (savasucagi.getPosition().x > 20.f) {
                 savasucagi.move(-7.2f, 0.f);
             }
         }
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) && can > 0) {
             if (savasucagi.getPosition().x < 780.f) {
                 savasucagi.move(7.2f, 0.f);
             }
@@ -310,7 +316,10 @@ int main() {
         cansayisi.setString("CAN: " + std::to_string(can));
         pencere.draw(skorsayisi);
         pencere.draw(cansayisi);
-        
+        if (can <= 0) {
+            pencere.clear(sf::Color::Black);
+            pencere.draw(gameover);
+        }
 
         pencere.display();
     }
