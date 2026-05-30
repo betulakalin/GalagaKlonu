@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <fstream>
 
 struct yildiz {
     sf::CircleShape sekil;
@@ -95,6 +96,12 @@ int main() {
     //skor ve can sistemi
     int skor = 0;
     int can = 3;
+    int enyuksekSkor = 0;
+    std::ifstream dosya("skor.txt");
+    if (dosya.is_open()) {
+        dosya >> enyuksekSkor;
+        dosya.close();
+    }
     int saldiransayisi = 0;
     sf::Font font;
     font.loadFromFile("C:/Windows/Fonts/arial.ttf");
@@ -120,6 +127,11 @@ int main() {
     tekrarbaslama.setFillColor(sf::Color::White);
     tekrarbaslama.setString("Yeniden baslamak icin R tusuna basiniz");
     tekrarbaslama.setPosition(140.f, 320.f);
+    sf::Text rekoryazisi;
+    rekoryazisi.setFont(font);
+    rekoryazisi.setCharacterSize(30);
+    rekoryazisi.setFillColor(sf::Color(255, 204, 255));
+    rekoryazisi.setPosition(240.f, 175.f);
     while (pencere.isOpen()) {
         sf::Event olay;
 
@@ -284,6 +296,14 @@ int main() {
                             d.aktif = false;
                             k.aktif = false;
                             skor += 20;
+                            if (skor > enyuksekSkor) {
+                                enyuksekSkor = skor;
+                                std::ofstream dosya("skor.txt");
+                                if (dosya.is_open()) {
+                                    dosya << enyuksekSkor;
+                                    dosya.close();
+                                }
+                            }
                             if (d.saldirma) {
                                 saldiransayisi--;
                             }
@@ -333,10 +353,13 @@ int main() {
         cansayisi.setString("CAN: " + std::to_string(can));
         pencere.draw(skorsayisi);
         pencere.draw(cansayisi);
+       
         if (can <= 0) {
             pencere.clear(sf::Color::Black);
             pencere.draw(gameover);
             pencere.draw(tekrarbaslama);
+            rekoryazisi.setString("EN YUKSEK SKOR: " + std::to_string(enyuksekSkor));
+            pencere.draw(rekoryazisi);
         }
 
         pencere.display();
