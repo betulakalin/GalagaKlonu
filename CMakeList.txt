@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.10)
+project(GalagaKlonu)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+add_executable(GalagaKlonu main.cpp)
+target_link_libraries(GalagaKlonu sfml-graphics sfml-window sfml-system)
