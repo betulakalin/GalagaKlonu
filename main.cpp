@@ -184,6 +184,7 @@ int main() {
         if (can <= 0 && sf::Keyboard::isKeyPressed(sf::Keyboard::R)) {
             can = 3;
             skor = 0;
+            saldiransayisi = 0;
             oyunBasladi = false;
             
             kursunlar.clear();
