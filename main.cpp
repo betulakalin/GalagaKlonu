@@ -189,6 +189,30 @@ int main() {
             kursunlar.clear();
             savasucagi.setPosition(380.f, 520.f);
             dusmanlar.clear();
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 10; j++) {
+                    uzaylilar u;
+                    u.sekil.setPointCount(10);
+                    u.sekil.setPoint(0, sf::Vector2f(0, -18));
+                    u.sekil.setPoint(1, sf::Vector2f(8, -12));
+                    u.sekil.setPoint(2, sf::Vector2f(18, -5));
+                    u.sekil.setPoint(3, sf::Vector2f(22, 10));
+                    u.sekil.setPoint(4, sf::Vector2f(12, 18));
+                    u.sekil.setPoint(5, sf::Vector2f(0, 8));
+                    u.sekil.setPoint(6, sf::Vector2f(-12, 18));
+                    u.sekil.setPoint(7, sf::Vector2f(-22, 10));
+                    u.sekil.setPoint(8, sf::Vector2f(-18, -5));
+                    u.sekil.setPoint(9, sf::Vector2f(-8, -12));
+                    u.sekil.setFillColor(sf::Color(9, 25, 145));
+
+                    u.hedefYeri = sf::Vector2f(130.f + (j * 60.f), 40.f + (i * 60.f));
+                    u.sekil.setPosition(u.hedefYeri.x, -100.f - (i * 150.f) - (j * 40.f));
+                    u.hareketUlasti = false;
+                    u.aktif = true;
+                    u.atesZamani = rand() % 400 + 250;
+                    dusmanlar.push_back(u);
+                }
+            }
         }
 
         for (auto& k : kursunlar) {
